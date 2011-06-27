@@ -528,11 +528,14 @@ void PKReleaseSubparserTree(PKParser *p) {
     }
     
     if (selName) {
+		NSLog( @"selName: %@", selName );
         SEL sel = NSSelectorFromString(selName);
         if (assembler && [assembler respondsToSelector:sel]) {
+			NSLog( @"... registered with assembler" );
             [p setAssembler:assembler selector:sel];
         }
         if (preassembler && [preassembler respondsToSelector:sel]) {
+			NSLog( @"... registered with preassembler" );
             NSString *selName = [self defaultPreassemblerSelectorNameForParserName:parserName];
             [p setPreassembler:preassembler selector:NSSelectorFromString(selName)];
         }
