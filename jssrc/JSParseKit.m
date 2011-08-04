@@ -44,8 +44,8 @@
 #import "PKJSLowercaseWord.h"
 
 static void printValue(JSContextRef ctx, JSValueRef val) {
-    NSString *s = PKJSValueGetNSString(ctx, val, NULL);
-    NSLog(@"%@", s);
+    // NSString *s = PKJSValueGetNSString(ctx, val, NULL);
+    // NSLog(@"%@", s);
 }
 
 static JSValueRef print(JSContextRef ctx, JSObjectRef function, JSObjectRef this, size_t argc, const JSValueRef argv[], JSValueRef *ex) {

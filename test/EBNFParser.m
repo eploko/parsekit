@@ -395,8 +395,8 @@ static NSString * const kEBNFVariableSuffix = @"";
 
 
 - (void)didMatchAssignment:(PKAssembly *)a {
-    NSLog(@"%s", _cmd);
-    NSLog(@"a: %@", a);
+    // NSLog(@"%s", _cmd);
+    // NSLog(@"a: %@", a);
     id val = [a pop];
     PKToken *keyTok = [a pop];
     NSMutableDictionary *table = [NSMutableDictionary dictionaryWithDictionary:a.target];

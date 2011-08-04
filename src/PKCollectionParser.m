@@ -73,7 +73,7 @@
 
 - (void)add:(PKParser *)p {
     if (![p isKindOfClass:[PKParser class]]) {
-        NSLog(@"p: %@", p);
+        // NSLog(@"p: %@", p);
     }
     NSParameterAssert([p isKindOfClass:[PKParser class]]);
     [subparsers addObject:p];
