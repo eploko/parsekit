@@ -26,7 +26,7 @@ static PKTokenEOF *EOFToken = nil;
 + (PKTokenEOF *)instance {
     @synchronized(self) {
         if (!EOFToken) {
-            [[self alloc] init]; // assignment not done here
+            [[[self alloc] init] autorelease]; // assignment not done here
         }
     }
     return EOFToken;
@@ -36,7 +36,7 @@ static PKTokenEOF *EOFToken = nil;
 + (id)allocWithZone:(NSZone *)zone {
     @synchronized(self) {
         if (!EOFToken) {
-            EOFToken = [super allocWithZone:zone];
+            EOFToken = [[super allocWithZone:zone] retain];
             return EOFToken;  // assignment and return on first allocation
         }
     }
@@ -122,7 +122,7 @@ static PKTokenEOF *EOFToken = nil;
 // designated initializer
 - (id)initWithTokenType:(PKTokenType)t stringValue:(NSString *)s floatValue:(CGFloat)n {
     //NSParameterAssert(s);
-    if (self = [super init]) {
+    if ((self = [super init])) {
         self.tokenType = t;
         self.stringValue = s;
         self.floatValue = n;
