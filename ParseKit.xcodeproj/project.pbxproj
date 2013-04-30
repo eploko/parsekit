@@ -122,9 +122,9 @@
 		4D1DF052141A6FF7005E05D5 /* PKEmailState.m in Sources */ = {isa = PBXBuildFile; fileRef = D35F4A8511643630003811F3 /* PKEmailState.m */; };
 		4D1DF053141A6FF7005E05D5 /* PKURLState.m in Sources */ = {isa = PBXBuildFile; fileRef = D35F4A8611643630003811F3 /* PKURLState.m */; };
 		4D1DF054141A6FF7005E05D5 /* PKTwitterState.m in Sources */ = {isa = PBXBuildFile; fileRef = D33DC1971165634F004CE58C /* PKTwitterState.m */; };
+		4D38EBA116540D5F00DCD019 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D38EBA016540D5F00DCD019 /* libicucore.dylib */; };
 		4D5492AC141AD07900895E51 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5492A9141AD07900895E51 /* ApplicationServices.framework */; };
 		4D5492AD141AD07900895E51 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5492AA141AD07900895E51 /* Foundation.framework */; };
-		4D5492AE141AD07900895E51 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5492AB141AD07900895E51 /* libicucore.dylib */; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		D302C69D0EF044810090E714 /* TDPlistParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D36568A60EEF9FE900226554 /* TDPlistParser.m */; };
 		D3126D060FFD9BA700CBF4C4 /* PKNegation.m in Sources */ = {isa = PBXBuildFile; fileRef = D3126D040FFD9BA700CBF4C4 /* PKNegation.m */; };
@@ -755,6 +755,7 @@
 		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4D1DF05C141A6FF7005E05D5 /* libparsekitOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libparsekitOSX.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D38EBA016540D5F00DCD019 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/lib/libicucore.dylib; sourceTree = SYSTEM_DEVELOPER_DIR; };
 		4D5492A9141AD07900895E51 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/ApplicationServices.framework; sourceTree = SYSTEM_DEVELOPER_DIR; };
 		4D5492AA141AD07900895E51 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = SYSTEM_DEVELOPER_DIR; };
 		4D5492AB141AD07900895E51 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = SDKs/MacOSX10.6.sdk/usr/lib/libicucore.dylib; sourceTree = SYSTEM_DEVELOPER_DIR; };
@@ -1310,9 +1311,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D38EBA116540D5F00DCD019 /* libicucore.dylib in Frameworks */,
 				4D5492AC141AD07900895E51 /* ApplicationServices.framework in Frameworks */,
 				4D5492AD141AD07900895E51 /* Foundation.framework in Frameworks */,
-				4D5492AE141AD07900895E51 /* libicucore.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1410,6 +1411,7 @@
 		0867D691FE84028FC02AAC07 /* TODParseKit */ = {
 			isa = PBXGroup;
 			children = (
+				4D38EBA016540D5F00DCD019 /* libicucore.dylib */,
 				08FB77AEFE84172EC02AAC07 /* ParseKit Framework */,
 				D3C7D8220A411F31005DD154 /* ParseKit Tests */,
 				D36E98CB0E58C08F00496BD3 /* DebugApp */,
