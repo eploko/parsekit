@@ -22,7 +22,7 @@
 - (NSString *)ruleNameForSelName:(NSString *)selName withPrefix:(NSString *)pre;
 - (void)didMatchRuleNamed:(NSString *)name assembly:(PKAssembly *)a;
 - (void)willMatchRuleNamed:(NSString *)name assembly:(PKAssembly *)a;
-- (void)didMatchToken:(PKAssembly *)a;
+- (void)parser:(PKParser *)p didMatchToken:(PKAssembly *)a;
 - (PKParseTree *)currentFrom:(PKAssembly *)a;
 - (void)removeUnmatchedChildrenFrom:(PKParseTree *)n;
 
@@ -35,10 +35,11 @@
 @implementation PKParseTreeAssembler
 
 - (id)init {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         self.ruleNames = [NSMutableDictionary dictionary];
-        self.preassemblerPrefix = @"willMatch";
-        self.assemblerPrefix = @"didMatch";
+        self.preassemblerPrefix = @"parser:willMatch";
+        self.assemblerPrefix = @"parser:didMatch";
         self.suffix = @":";
     }
     return self;
@@ -68,15 +69,18 @@
 }
 
 
-- (id)performSelector:(SEL)sel withObject:(id)obj {
+- (id)performSelector:(SEL)sel withObject:(id)obj withObject:(id)obj1 {
     NSString *selName = NSStringFromSelector(sel);
     
+    //PKParser *p = obj;
+    PKAssembly *a = obj1;
+    
     if ([selName hasPrefix:assemblerPrefix] && [selName hasSuffix:suffix]) {
-        [self didMatchRuleNamed:[self ruleNameForSelName:selName withPrefix:assemblerPrefix] assembly:obj];
+        [self didMatchRuleNamed:[self ruleNameForSelName:selName withPrefix:assemblerPrefix] assembly:a];
     } else if ([selName hasPrefix:preassemblerPrefix] && [selName hasSuffix:suffix]) {
-        [self willMatchRuleNamed:[self ruleNameForSelName:selName withPrefix:preassemblerPrefix] assembly:obj];
+        [self willMatchRuleNamed:[self ruleNameForSelName:selName withPrefix:preassemblerPrefix] assembly:a];
     } else if ([super respondsToSelector:sel]) {
-        return [super performSelector:sel withObject:obj];
+        return [super performSelector:sel withObject:obj withObject:obj1];
     } else {
         NSAssert(0, @"");
     }
@@ -89,9 +93,9 @@
     
     if (!ruleName) {
         NSUInteger prefixLen = [prefix length];
-        NSInteger c = ((NSInteger)[selName characterAtIndex:prefixLen]) + 32; // lowercase
+        PKUniChar c = (PKUniChar)[[selName lowercaseString] characterAtIndex:prefixLen];
         NSRange r = NSMakeRange(prefixLen + 1, [selName length] - (prefixLen + [suffix length] + 1 /*:*/));
-        ruleName = [NSString stringWithFormat:@"%C%@", c, [selName substringWithRange:r]];
+        ruleName = [NSString stringWithFormat:@"%C%@", (unichar)c, [selName substringWithRange:r]];
         [ruleNames setObject:ruleName forKey:selName];
     }
     
@@ -100,15 +104,21 @@
 
 
 - (void)willMatchRuleNamed:(NSString *)name assembly:(PKAssembly *)a {
+    //NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, name, a);
     PKParseTree *current = [self currentFrom:a];
-    [self didMatchToken:a];
+    if (![current isKindOfClass:[PKParseTree class]]) return;
+
+    [self parser:nil didMatchToken:a];
     current = [current addChildRule:name];
     a.target = current;
 }
 
 
 - (void)didMatchRuleNamed:(NSString *)name assembly:(PKAssembly *)a {
+    //NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, name, a);
     PKParseTree *current = [self currentFrom:a];
+    if (![current isKindOfClass:[PKParseTree class]]) return;
+    NSAssert([current isKindOfClass:[PKParseTree class]], @"");
 
     NSArray *origChildren = [[[current children] mutableCopy] autorelease];
 
@@ -117,14 +127,14 @@
         oldCurrent = [[current retain] autorelease];
         a.target = [current parent];
         current = [self currentFrom:a];
-        [self didMatchToken:a];        
+        [self parser:nil didMatchToken:a];        
     }
 
     if (oldCurrent && ![oldCurrent isMatched]) {
         [(id)[current children] addObjectsFromArray:origChildren];
     }
 
-    [self didMatchToken:a];        
+    [self parser:nil didMatchToken:a];        
     current = [self currentFrom:a];
     
     [self removeUnmatchedChildrenFrom:current];
@@ -157,8 +167,10 @@
 }
 
 
-- (void)didMatchToken:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchToken:(PKAssembly *)a {
+    //NSLog(@"%s %@", __PRETTY_FUNCTION__, a);
     PKParseTree *current = [self currentFrom:a];
+    if (![current isKindOfClass:[PKParseTree class]]) return;
     if ([current isMatched]) return;
     
     NSMutableArray *toks = [NSMutableArray arrayWithCapacity:[a.stack count]];

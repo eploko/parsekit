@@ -32,8 +32,7 @@
 
 
 - (id)initWithString:(NSString *)s {
-    self = [super initWithString:s];
-    if (self) {
+    if (self = [super initWithString:s]) {
         self.defaultDelimiter = @"";
     }
     return self;
@@ -101,6 +100,19 @@
 }
 
 
+- (NSString *)lastConsumedObjects:(NSUInteger)len joinedByString:(NSString *)delimiter {
+    NSParameterAssert(delimiter);
+    
+    NSUInteger strLen = [string length];
+    
+    len = MIN(strLen, len);
+    
+    NSRange r = NSMakeRange(strLen - 1 - len, len);
+    NSString *s = [string substringWithRange:r];
+    return s;
+}
+
+
 // overriding simply to print NSNumber objects as their unichar values
 - (NSString *)description {
     NSMutableString *s = [NSMutableString string];
@@ -111,7 +123,7 @@
     
     for (id obj in self.stack) {
         if ([obj isKindOfClass:[NSNumber class]]) { // ***this is needed for Char Assemblies
-            [s appendFormat:@"%C", [obj integerValue]];
+            [s appendFormat:@"%C", (unichar)[obj integerValue]];
         } else {
             [s appendString:[obj description]];
         }

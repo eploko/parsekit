@@ -25,7 +25,8 @@
 @implementation XPathParser
 
 - (id)init {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         self.xpathAssembler = [[[XPathAssembler alloc] init] autorelease];
         [self add:self.locationPath];
     }
@@ -172,7 +173,7 @@
 
 // [4] Step ::=       AxisSpecifier NodeTest Predicate* | AbbreviatedStep    
 - (PKCollectionParser *)step {
-    NSLog(@"%s", _cmd);
+//    NSLog(@"%s", __PRETTY_FUNCTION__);
     if (!step) {
         self.step = [PKAlternation alternation];
         step.name = @"step";
@@ -185,7 +186,7 @@
         [step add:s];
         [step add:self.abbreviatedStep];
         
-        [step setAssembler:xpathAssembler selector:@selector(didMatchStep:)];
+        [step setAssembler:xpathAssembler selector:@selector(parser:didMatchStep:)];
     }
     return step;
 }
@@ -204,7 +205,7 @@
         
         [axisSpecifier add:s];
         [axisSpecifier add:self.abbreviatedAxisSpecifier];
-        [axisSpecifier setAssembler:xpathAssembler selector:@selector(didMatchAxisSpecifier:)];
+        [axisSpecifier setAssembler:xpathAssembler selector:@selector(parser:didMatchAxisSpecifier:)];
     }
     return axisSpecifier;
 }

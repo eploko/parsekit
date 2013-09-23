@@ -20,13 +20,15 @@
     NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"xml" ofType:@"grammar"];
     g = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     factory = [PKParserFactory factory];
-    p = [factory parserFromGrammar:g assembler:self];
+    p = [factory parserFromGrammar:g assembler:self error:nil];
     t = p.tokenizer;
 }
 
 
 - (void)testSTag {
-    //PKParser *sTag = [p parserNamed:@"sTag"];
+    PKParser *sTag = [p parserNamed:@"sTag"];
+    TDNotNil(sTag);
+    TDTrue([sTag isKindOfClass:[PKParser class]]);
 
 }
 

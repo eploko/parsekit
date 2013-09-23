@@ -132,7 +132,7 @@
     a = [PKTokenAssembly assemblyWithString:s];
     result = [[p arrayParser] bestMatchFor:a];
     
-    NSLog(@"result: %@", result);
+//    NSLog(@"result: %@", result);
     TDNotNil(result);
     id obj = [result pop];
     TDEquals((int)3, (int)[obj count]);
@@ -526,7 +526,7 @@
         @"1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
         @"]";
 
-    p = [[[TDFastJsonParser alloc] init] autorelease];
+    p = (id)[[[TDFastJsonParser alloc] init] autorelease];
     result = [p parse:s];
     //NSLog(@"result %@", result);
     

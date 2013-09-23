@@ -29,7 +29,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -44,7 +44,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -59,7 +59,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -73,27 +73,27 @@
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @"(");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isWord);
     TDEqualObjects(tok.stringValue, @"Something");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isWord);
     TDEqualObjects(tok.stringValue, @"like");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, @"http://foo.com/blah_blah");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @")");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -108,7 +108,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -123,7 +123,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -138,7 +138,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -152,27 +152,27 @@
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @"(");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isWord);
     TDEqualObjects(tok.stringValue, @"Something");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isWord);
     TDEqualObjects(tok.stringValue, @"like");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, @"http://foo.com/blah_blah_(wikipedia)");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @")");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -187,12 +187,12 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, @"http://foo.com/blah_blah");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @".");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -207,12 +207,12 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, @"http://foo.com/blah_blah");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @",");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -227,12 +227,12 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, @"http://foo.com/blah_blah/");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @".");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -246,17 +246,17 @@
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @"<");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, @"http://foo.com/blah_blah");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @">");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -270,17 +270,17 @@
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @"<");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, @"http://foo.com/blah_blah/");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @">");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -295,12 +295,12 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, @"http://www.example.com/wpstyle/?p=364");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @".");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -315,7 +315,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -330,7 +330,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -345,7 +345,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -360,7 +360,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -375,7 +375,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -390,7 +390,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -405,7 +405,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -420,7 +420,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -435,7 +435,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -450,7 +450,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -465,7 +465,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -480,7 +480,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -495,7 +495,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -510,7 +510,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -525,7 +525,7 @@
     
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -539,42 +539,42 @@
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @"<");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isWord);
     TDEqualObjects(tok.stringValue, @"tag");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @">");
-    TDEquals(tok.floatValue, (CGFloat)0.0);    
+    TDEquals(tok.floatValue, (PKFloat)0.0);    
     
     tok = [t nextToken];
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, @"http://example.com");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @"<");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @"/");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isWord);
     TDEqualObjects(tok.stringValue, @"tag");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @">");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -588,27 +588,159 @@
     tok = [t nextToken];
     TDTrue(tok.isWord);
     TDEqualObjects(tok.stringValue, @"Just");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isWord);
     TDEqualObjects(tok.stringValue, @"a");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isURL);
     TDEqualObjects(tok.stringValue, @"www.example.com");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isWord);
     TDEqualObjects(tok.stringValue, @"link");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @".");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDEqualObjects(tok, [PKToken EOFToken]);
+}
+
+
+- (void)testMoreThanOneParens {
+    s = @"http://foo.com/more_(than)_one_(parens)";
+    t.string = s;
+    
+    tok = [t nextToken];
+    TDTrue(tok.isURL);
+    TDEqualObjects(tok.stringValue, s);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDEqualObjects(tok, [PKToken EOFToken]);
+}
+
+
+- (void)testMoreThanOneParensFoo {
+    s = @"http://foo.com/more_(than)_one_(parens) foo";
+    t.string = s;
+    
+    tok = [t nextToken];
+    TDTrue(tok.isURL);
+    TDEqualObjects(tok.stringValue, @"http://foo.com/more_(than)_one_(parens)");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDTrue(tok.isWord);
+    TDEqualObjects(tok.stringValue, @"foo");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDEqualObjects(tok, [PKToken EOFToken]);
+}
+
+
+- (void)testParensHashCite {
+    s = @"http://foo.com/blah_(wikipedia)#cite-1";
+    t.string = s;
+    
+    tok = [t nextToken];
+    TDTrue(tok.isURL);
+    TDEqualObjects(tok.stringValue, s);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDEqualObjects(tok, [PKToken EOFToken]);
+}
+
+
+- (void)testParensHashCiteFoo {
+    s = @"http://foo.com/blah_(wikipedia)#cite-1 foo";
+    t.string = s;
+    
+    tok = [t nextToken];
+    TDTrue(tok.isURL);
+    TDEqualObjects(tok.stringValue, @"http://foo.com/blah_(wikipedia)#cite-1");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDTrue(tok.isWord);
+    TDEqualObjects(tok.stringValue, @"foo");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDEqualObjects(tok, [PKToken EOFToken]);
+}
+
+
+- (void)testUnicodeInParens {
+    s = @"http://foo.com/unicode_(✪)_in_parens";
+    t.string = s;
+    
+    tok = [t nextToken];
+    TDTrue(tok.isURL);
+    TDEqualObjects(tok.stringValue, s);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDEqualObjects(tok, [PKToken EOFToken]);
+}
+
+
+- (void)testUnicodeInParensFoo {
+    s = @"http://foo.com/unicode_(✪)_in_parens foo";
+    t.string = s;
+    
+    tok = [t nextToken];
+    TDTrue(tok.isURL);
+    TDEqualObjects(tok.stringValue, @"http://foo.com/unicode_(✪)_in_parens");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDTrue(tok.isWord);
+    TDEqualObjects(tok.stringValue, @"foo");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDEqualObjects(tok, [PKToken EOFToken]);
+}
+
+
+- (void)testSomethingAfterParens {
+    s = @"http://foo.com/(something)?after=parens";
+    t.string = s;
+    
+    tok = [t nextToken];
+    TDTrue(tok.isURL);
+    TDEqualObjects(tok.stringValue, s);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDEqualObjects(tok, [PKToken EOFToken]);
+}
+
+
+- (void)testSomethingAfterParensFoo {
+    s = @"http://foo.com/(something)?after=parens foo";
+    t.string = s;
+    
+    tok = [t nextToken];
+    TDTrue(tok.isURL);
+    TDEqualObjects(tok.stringValue, @"http://foo.com/(something)?after=parens");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDTrue(tok.isWord);
+    TDEqualObjects(tok.stringValue, @"foo");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);

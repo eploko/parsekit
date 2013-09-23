@@ -16,6 +16,9 @@
 
 @class PKAssembly;
 @class PKTokenizer;
+@class PKParser;
+
+typedef void (^PKAssemblerBlock)(PKParser *, PKAssembly *);
 
 /*!
     @class      PKParser 
@@ -41,10 +44,8 @@
                 <p>The parser does not match directly against a string, it matches against a <tt>PKAssembly</tt>. The resulting assembly shows its stack, with four words on it, along with its sequence of tokens, and the index at the end of these. In practice, parsers will do some work on an assembly, based on the text they recognize.</p>
 */
 @interface PKParser : NSObject {
-#ifdef TARGET_OS_SNOW_LEOPARD
-    void (^assemblerBlock)(PKAssembly *);
-    void (^preassemblerBlock)(PKAssembly *);
-#endif
+    PKAssemblerBlock assemblerBlock;
+    PKAssemblerBlock preassemblerBlock;
     id assembler;
     SEL assemblerSelector;
     id preassembler;
@@ -61,7 +62,7 @@
 
 /*!
     @brief      Sets the object and method that will work on an assembly whenever this parser successfully matches against the assembly.
-    @details    The method represented by <tt>sel</tt> must accept a single <tt>PKAssembly</tt> argument. The signature of <tt>sel</tt> should be similar to: <tt>- (void)didMatchAssembly:(PKAssembly *)a</tt>.
+    @details    The method represented by <tt>sel</tt> must accept a single <tt>PKAssembly</tt> argument. The signature of <tt>sel</tt> should be similar to: <tt>- (void)parser:(PKParser *)p didMatchAssembly:(PKAssembly *)a</tt>.
     @param      a the assembler this parser will use to work on an assembly
     @param      sel a selector that assembler <tt>a</tt> responds to which will work on an assembly
 */
@@ -106,7 +107,6 @@
  */
 - (PKParser *)parserNamed:(NSString *)name;
 
-#ifdef TARGET_OS_SNOW_LEOPARD
 /*!
     @property   assemblerBlock
     @brief      Set a block which should be executed after this parser is matched
@@ -115,7 +115,7 @@
                 <p>Using a block as the assembler will sometimes be more convient than setting an assembler object.</p>
     @param      block of code to be executed after a parser is matched.
 */
-@property (nonatomic, retain) void (^assemblerBlock)(PKAssembly *);
+@property (nonatomic, copy) PKAssemblerBlock assemblerBlock;
 
 /*!
     @property   preassemblerBlock
@@ -125,8 +125,7 @@
                 <p>Using a block as the preassembler will sometimes be more convient than setting an preassembler object.</p>
     @param      block of code to be executed before a parser is matched.
  */
-@property (nonatomic, retain) void (^preassemblerBlock)(PKAssembly *);
-#endif
+@property (nonatomic, copy) PKAssemblerBlock preassemblerBlock;
 
 /*!
     @property   assembler
@@ -138,7 +137,7 @@
 /*!
     @property   assemblerSelector
     @brief      The method of <tt>assembler</tt> this parser will call to work on a matched assembly.
-    @details    The method represented by <tt>assemblerSelector</tt> must accept a single <tt>PKAssembly</tt> argument. The signature of <tt>assemblerSelector</tt> should be similar to: <tt>- (void)didMatchFoo:(PKAssembly *)a</tt>.
+    @details    The method represented by <tt>assemblerSelector</tt> must accept a single <tt>PKAssembly</tt> argument. The signature of <tt>assemblerSelector</tt> should be similar to: <tt>- (void)parser:(PKParser *)p didMatchFoo:(PKAssembly *)a</tt>.
 */
 @property (nonatomic, assign) SEL assemblerSelector;
 
@@ -152,7 +151,7 @@
 /*!
     @property   preAssemlerSelector
     @brief      The method of <tt>preassembler</tt> this parser will call to work on an assembly.
-    @details    The method represented by <tt>preassemblerSelector</tt> must accept a single <tt>PKAssembly</tt> argument. The signature of <tt>preassemblerSelector</tt> should be similar to: <tt>- (void)didMatchAssembly:(PKAssembly *)a</tt>.
+    @details    The method represented by <tt>preassemblerSelector</tt> must accept a single <tt>PKAssembly</tt> argument. The signature of <tt>preassemblerSelector</tt> should be similar to: <tt>- (void)parser:(PKParser *)p didMatchAssembly:(PKAssembly *)a</tt>.
 */
 @property (nonatomic, assign) SEL preassemblerSelector;
 
@@ -166,7 +165,7 @@
 
 @interface PKParser (PKParserFactoryAdditions)
 
-- (id)parse:(NSString *)s;
+- (id)parse:(NSString *)s error:(NSError **)outError;
 
 - (PKTokenizer *)tokenizer;
 @end

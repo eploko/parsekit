@@ -32,7 +32,8 @@
 @implementation TDGenericAssembler
 
 - (id)init {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         self.productionNames = [NSMutableDictionary dictionary];
         self.defaultProperties = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [NSColor blackColor], NSForegroundColorAttributeName,
@@ -69,9 +70,9 @@
     
     if (!productionName) {
         NSUInteger prefixLen = [prefix length];
-        NSInteger c = ((NSInteger)[selName characterAtIndex:prefixLen]) + 32; // lowercase
+        PKUniChar c = (PKUniChar)[[selName lowercaseString] characterAtIndex:prefixLen];
         NSRange r = NSMakeRange(prefixLen + 1, [selName length] - (prefixLen + [suffix length] + 1 /*:*/));
-        productionName = [NSString stringWithFormat:@"%C%@", c, [selName substringWithRange:r]];
+        productionName = [NSString stringWithFormat:@"%C%@", (unichar)c, [selName substringWithRange:r]];
         [productionNames setObject:productionName forKey:selName];
     }
     
@@ -91,7 +92,7 @@
     
     NSMutableArray *toks = nil;
     PKToken *tok = nil;
-    while (tok = [a pop]) {
+    while ((tok = [a pop])) {
         if (PKTokenTypeWhitespace != tok.tokenType) {
             if (!toks) toks = [NSMutableArray array];
             [toks addObject:tok];
@@ -131,7 +132,7 @@
 - (NSMutableArray *)popWhitespaceTokensFrom:(PKAssembly *)a {
     NSMutableArray *whitespaceToks = nil;
     PKToken *tok = nil;
-    while (tok = [a pop]) {
+    while ((tok = [a pop])) {
         if (PKTokenTypeWhitespace == tok.tokenType) {
             if (!whitespaceToks) {
                 whitespaceToks = [NSMutableArray array];

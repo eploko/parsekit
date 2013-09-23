@@ -12,6 +12,8 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+#if PK_PLATFORM_TWITTER_STATE
+#else
 #import "XPathParserTest.h"
 #import "TDNCName.h"
 
@@ -32,7 +34,7 @@
     s = @"/foo";
     a = [p assemblyWithString:s];
     result = [p bestMatchFor:a];
-    NSLog(@"\n\n result: %@ \n\n", result);
+//    NSLog(@"\n\n result: %@ \n\n", result);
     TDEqualObjects(@"[/, foo]//foo^", [result description]);
 
     s = @"/foo/bar";
@@ -77,7 +79,7 @@
 - (void)testAxisName {
     s = @"child";
     a = [p assemblyWithString:s];
-    NSLog(@"\n\n a: %@ \n\n", a);
+//    NSLog(@"\n\n a: %@ \n\n", a);
     result = [p.axisName bestMatchFor:a];
     TDNotNil(result);
     TDEqualObjects(@"[child]child^", [result description]);
@@ -283,6 +285,7 @@
     TDEqualObjects(@"[foo, (, 'bar', ,, 1, )]foo/(/'bar'/,/1/)^", [result description]);
 }
 
+
 - (void)testOrExpr {
     s = @"foo or bar";
     a = [p assemblyWithString:s];
@@ -307,3 +310,4 @@
 }
 
 @end
+#endif

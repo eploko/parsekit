@@ -37,7 +37,8 @@
 
 
 - (id)initWithIntentToAssemble:(BOOL)yn {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         shouldAssemble = yn;
         self.curly = [PKToken tokenWithTokenType:PKTokenTypeSymbol stringValue:@"{" floatValue:0.0];
         self.bracket = [PKToken tokenWithTokenType:PKTokenTypeSymbol stringValue:@"[" floatValue:0.0];
@@ -95,7 +96,7 @@
     if (!stringParser) {
         self.stringParser = [PKQuotedString quotedString];
         if (shouldAssemble) {
-            [stringParser setAssembler:self selector:@selector(didMatchString:)];
+            [stringParser setAssembler:self selector:@selector(parser:didMatchString:)];
         }
     }
     return stringParser;
@@ -106,7 +107,7 @@
     if (!numberParser) {
         self.numberParser = [PKNumber number];
         if (shouldAssemble) {
-            [numberParser setAssembler:self selector:@selector(didMatchNumber:)];
+            [numberParser setAssembler:self selector:@selector(parser:didMatchNumber:)];
         }
     }
     return numberParser;
@@ -117,7 +118,7 @@
     if (!nullParser) {
         self.nullParser = [[PKLiteral literalWithString:@"null"] discard];
         if (shouldAssemble) {
-            [nullParser setAssembler:self selector:@selector(didMatchNull:)];
+            [nullParser setAssembler:self selector:@selector(parser:didMatchNull:)];
         }
     }
     return nullParser;
@@ -130,7 +131,7 @@
         [booleanParser add:[PKLiteral literalWithString:@"true"]];
         [booleanParser add:[PKLiteral literalWithString:@"false"]];
         if (shouldAssemble) {
-            [booleanParser setAssembler:self selector:@selector(didMatchBoolean:)];
+            [booleanParser setAssembler:self selector:@selector(parser:didMatchBoolean:)];
         }
     }
     return booleanParser;
@@ -158,7 +159,7 @@
         [arrayParser add:[[PKSymbol symbolWithString:@"]"] discard]];
         
         if (shouldAssemble) {
-            [arrayParser setAssembler:self selector:@selector(didMatchArray:)];
+            [arrayParser setAssembler:self selector:@selector(parser:didMatchArray:)];
         }
     }
     return arrayParser;
@@ -188,7 +189,7 @@
         [objectParser add:[[PKSymbol symbolWithString:@"}"] discard]];
 
         if (shouldAssemble) {
-            [objectParser setAssembler:self selector:@selector(didMatchObject:)];
+            [objectParser setAssembler:self selector:@selector(parser:didMatchObject:)];
         }
     }
     return objectParser;
@@ -226,7 +227,7 @@
         [propertyParser add:[[PKSymbol symbolWithString:@":"] discard]];
         [propertyParser add:self.valueParser];
         if (shouldAssemble) {
-            [propertyParser setAssembler:self selector:@selector(didMatchProperty:)];
+            [propertyParser setAssembler:self selector:@selector(parser:didMatchProperty:)];
         }
     }
     return propertyParser;
@@ -243,30 +244,30 @@
 }
 
 
-- (void)didMatchNull:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchNull:(PKAssembly *)a {
     [a push:[NSNull null]];
 }
 
 
-- (void)didMatchNumber:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchNumber:(PKAssembly *)a {
     PKToken *tok = [a pop];
     [a push:[NSNumber numberWithFloat:tok.floatValue]];
 }
 
 
-- (void)didMatchString:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchString:(PKAssembly *)a {
     PKToken *tok = [a pop];
     [a push:[tok.stringValue stringByTrimmingQuotes]];
 }
 
 
-- (void)didMatchBoolean:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchBoolean:(PKAssembly *)a {
     PKToken *tok = [a pop];
     [a push:[NSNumber numberWithBool:[tok.stringValue isEqualToString:@"true"] ? YES : NO]];
 }
 
 
-- (void)didMatchArray:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchArray:(PKAssembly *)a {
     NSArray *elements = [a objectsAbove:self.bracket];
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:[elements count]];
     
@@ -280,12 +281,11 @@
 }
 
 
-- (void)didMatchObject:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchObject:(PKAssembly *)a {
     NSArray *elements = [a objectsAbove:self.curly];
     NSMutableDictionary *d = [NSMutableDictionary dictionaryWithCapacity:[elements count] / 2.];
     
-    NSInteger i = 0;
-    for ( ; i < [elements count] - 1; i++) {
+    for (NSInteger i = 0; i < [elements count] - 1; i++) {
         id value = [elements objectAtIndex:i++];
         NSString *key = [elements objectAtIndex:i];
         if (key && value) {
@@ -298,7 +298,7 @@
 }
 
 
-- (void)didMatchProperty:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchProperty:(PKAssembly *)a {
     id value = [a pop];
     PKToken *tok = [a pop];
     NSString *key = [tok.stringValue stringByTrimmingQuotes];

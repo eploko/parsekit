@@ -6,6 +6,7 @@
 //  Copyright 2010 Todd Ditchendorf. All rights reserved.
 //
 
+#if PK_PLATFORM_TWITTER_STATE
 #import <ParseKit/PKTwitterState.h>
 #import <ParseKit/PKReader.h>
 #import <ParseKit/PKTokenizer.h>
@@ -30,7 +31,8 @@
 @implementation PKTwitterState
 
 - (id)init {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
 
     }
     return self;
@@ -73,3 +75,4 @@
 }
 
 @end
+#endif

@@ -36,7 +36,8 @@
 @implementation TDSyntaxHighlighter
 
 - (id)init {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
 
     }
     return self;
@@ -81,7 +82,7 @@
         NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"mini_css" ofType:@"grammar"];
         NSString *grammarString = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
 
-        self.miniCSSParser = [self.parserFactory parserFromGrammar:grammarString assembler:self.miniCSSAssembler];
+        self.miniCSSParser = [self.parserFactory parserFromGrammar:grammarString assembler:self.miniCSSAssembler error:nil];
     } 
     return miniCSSParser;
 }
@@ -122,15 +123,15 @@
     
     if (!parser) {
         // get attributes from css && give to the generic assembler
-        parserFactory.assemblerSettingBehavior = PKParserFactoryAssemblerSettingBehaviorOnAll;
+        parserFactory.assemblerSettingBehavior = PKParserFactoryAssemblerSettingBehaviorAll;
         self.genericAssembler.attributes = [self attributesForGrammarNamed:grammarName];
         
         NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:grammarName ofType:@"grammar"];
         NSString *grammarString = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
 
         // generate a parser for the requested grammar
-        parserFactory.assemblerSettingBehavior = PKParserFactoryAssemblerSettingBehaviorOnTerminals;
-        parser = [self.parserFactory parserFromGrammar:grammarString assembler:self.genericAssembler];
+        parserFactory.assemblerSettingBehavior = PKParserFactoryAssemblerSettingBehaviorTerminals;
+        parser = [self.parserFactory parserFromGrammar:grammarString assembler:self.genericAssembler error:nil];
         
         if (cacheParsers) {
             [self.parserCache setObject:parser forKey:grammarName];

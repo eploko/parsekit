@@ -6,6 +6,7 @@
 //  Copyright 2010 Todd Ditchendorf. All rights reserved.
 //
 
+#if PK_PLATFORM_EMAIL_STATE
 #import "TDEmailStateTest.h"
 
 @implementation TDEmailStateTest
@@ -29,7 +30,7 @@
     
     TDTrue(tok.isEmail);
     TDEqualObjects(tok.stringValue, s);
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -43,17 +44,17 @@
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @"(");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isEmail);
     TDEqualObjects(tok.stringValue, @"todd@gmail.com");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @")");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
@@ -67,35 +68,115 @@
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @"(");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isWord);
     TDEqualObjects(tok.stringValue, @"something");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isWord);
     TDEqualObjects(tok.stringValue, @"like");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isEmail);
     TDEqualObjects(tok.stringValue, @"todd@gmail.com");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @".");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDTrue(tok.isSymbol);
     TDEqualObjects(tok.stringValue, @")");
-    TDEquals(tok.floatValue, (CGFloat)0.0);
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDEqualObjects(tok, [PKToken EOFToken]);
+}
+
+
+- (void)testNSLog {
+    s = @"NSLog(@\"playbackFinished. Reason: Playback Ended\");";
+    t.string = s;
+    
+    tok = [t nextToken];
+    
+    TDTrue(tok.isWord);
+    TDEqualObjects(tok.stringValue, @"NSLog");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+
+    tok = [t nextToken];
+    TDTrue(tok.isSymbol);
+    TDEqualObjects(tok.stringValue, @"(");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDTrue(tok.isSymbol);
+    TDEqualObjects(tok.stringValue, @"@");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDTrue(tok.isQuotedString);
+    TDEqualObjects(tok.stringValue, @"\"playbackFinished. Reason: Playback Ended\"");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDTrue(tok.isSymbol);
+    TDEqualObjects(tok.stringValue, @")");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDTrue(tok.isSymbol);
+    TDEqualObjects(tok.stringValue, @";");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDEqualObjects(tok, [PKToken EOFToken]);
+}
+
+- (void)testNSLog2 {
+    s = @"NSLog(@\"playbackFinished. Reason: Playback Ended\");";
+    t.string = s;
+    
+    tok = [t nextToken];
+    
+    TDTrue(tok.isWord);
+    TDEqualObjects(tok.stringValue, @"NSLog");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDTrue(tok.isSymbol);
+    TDEqualObjects(tok.stringValue, @"(");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDTrue(tok.isSymbol);
+    TDEqualObjects(tok.stringValue, @"@");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDTrue(tok.isQuotedString);
+    TDEqualObjects(tok.stringValue, @"\"playbackFinished. Reason: Playback Ended\"");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDTrue(tok.isSymbol);
+    TDEqualObjects(tok.stringValue, @")");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
+    
+    tok = [t nextToken];
+    TDTrue(tok.isSymbol);
+    TDEqualObjects(tok.stringValue, @";");
+    TDEquals(tok.floatValue, (PKFloat)0.0);
     
     tok = [t nextToken];
     TDEqualObjects(tok, [PKToken EOFToken]);
 }
 
 @end
+#endif

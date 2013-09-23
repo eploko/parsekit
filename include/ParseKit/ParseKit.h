@@ -38,6 +38,7 @@
 #import <ParseKit/PKDifference.h>
 #import <ParseKit/PKNegation.h>
 #import <ParseKit/PKIntersection.h>
+#import <ParseKit/PKCompositeParser.h>
 #import <ParseKit/PKCollectionParser.h>
 #import <ParseKit/PKAlternation.h>
 #import <ParseKit/PKRepetition.h>
@@ -64,7 +65,10 @@
 #import <ParseKit/PKDelimitState.h>
 #import <ParseKit/PKURLState.h>
 #import <ParseKit/PKEmailState.h>
+#if PK_PLATFORM_TWITTER_STATE
 #import <ParseKit/PKTwitterState.h>
+#import <ParseKit/PKHashtagState.h>
+#endif
 #import <ParseKit/PKCommentState.h>
 #import <ParseKit/PKSingleLineCommentState.h>
 #import <ParseKit/PKMultiLineCommentState.h>
@@ -89,3 +93,9 @@
 
 // grammar
 #import <ParseKit/PKParserFactory.h>
+
+// static
+#import <ParseKit/PKSParser.h>
+#import <ParseKit/PKSTokenAssembly.h>
+#import <ParseKit/PKSRecognitionException.h>
+

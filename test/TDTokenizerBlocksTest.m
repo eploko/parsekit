@@ -24,21 +24,19 @@
 }
 
 
-#ifdef TARGET_OS_SNOW_LEOPARD
 - (void)testBlastOff {
     s = @"\"It's 123 blast-off!\", she said, // watch out!\n"
     @"and <= 3 'ticks' later /* wince */, it's blast-off!";
     t = [PKTokenizer tokenizerWithString:s];
     
-    NSLog(@"\n\n starting!!! \n\n");
+//    NSLog(@"\n\n starting!!! \n\n");
 
     [t enumerateTokensUsingBlock:^(PKToken *tok, BOOL *stop) {
-        NSLog(@"(%@)", tok.stringValue);
+//        NSLog(@"(%@)", tok.stringValue);
     }];
                                          
     
-    NSLog(@"\n\n done!!! \n\n");
+//    NSLog(@"\n\n done!!! \n\n");
 }
-#endif
 
 @end

@@ -23,7 +23,8 @@
 @implementation TDMiniCSSAssembler
 
 - (id)init {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         self.attributes = [NSMutableDictionary dictionary];
         self.paren = [PKToken tokenWithTokenType:PKTokenTypeSymbol stringValue:@"(" floatValue:0.0];
         self.curly = [PKToken tokenWithTokenType:PKTokenTypeSymbol stringValue:@"{" floatValue:0.0];
@@ -56,37 +57,37 @@
 //    string      = QuotedString;
 //    constants   = 'bold' | 'normal' | 'italic';
 
-- (void)didMatchProperty:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchProperty:(PKAssembly *)a {
     PKToken *tok = [a pop];
     [a push:tok.stringValue];
 }
 
 
-- (void)didMatchString:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchString:(PKAssembly *)a {
     PKToken *tok = [a pop];
     [a push:[tok.stringValue stringByTrimmingQuotes]];
 }
 
 
-- (void)didMatchConstant:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchConstant:(PKAssembly *)a {
     PKToken *tok = [a pop];
     [a push:tok.stringValue];
 }
 
 
-- (void)didMatchNum:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchNum:(PKAssembly *)a {
     PKToken *tok = [a pop];
     [a push:[NSNumber numberWithFloat:tok.floatValue]];
 }
 
 
-- (void)didMatchPixelValue:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchPixelValue:(PKAssembly *)a {
     PKToken *tok = [a pop];
     [a push:[NSNumber numberWithFloat:tok.floatValue]];
 }
 
 
-- (void)didMatchRgb:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchRgb:(PKAssembly *)a {
     NSArray *objs = [a objectsAbove:paren];
     [a pop]; // discard '('
     CGFloat blue  = [(PKToken *)[objs objectAtIndex:0] floatValue]/255.0;
@@ -96,14 +97,13 @@
 }
 
 
-- (void)didMatchActualDecls:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchActualDecls:(PKAssembly *)a {
     id d = [NSMutableDictionary dictionary];
     NSArray *objs = [a objectsAbove:curly];
     [a pop]; // discard curly
 
-    NSInteger i = 0;
     NSInteger count = [objs count];
-    for ( ; i < count - 1; i++) {
+    for (NSInteger i = 0; i < count - 1; i++) {
         id propVal = [objs objectAtIndex:i];
         id propName = [objs objectAtIndex:++i];
         [d setObject:propVal forKey:propName];
@@ -113,7 +113,7 @@
 }
 
 
-- (void)didMatchRuleset:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchRuleset:(PKAssembly *)a {
     id props = [a pop];
     [self gatherPropertiesIn:props];
 
@@ -168,7 +168,7 @@
 //    return i;
 //}
 //
-//- (void)didMatchHexcolor:(PKAssembly *)a {
+//- (void)parser:(PKParser *)p didMatchHexcolor:(PKAssembly *)a {
 //    PKToken *tok = [a pop];
 //    NSString *s = tok.stringValue;
 //    NSColor *color = nil;

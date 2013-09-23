@@ -27,7 +27,7 @@
 }
 
 
-- (void)didMatchEndMarker:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchEndMarker:(PKAssembly *)a {
     [a pop]; // '@>'
     NSString *k = [a pop];
     [a pop]; // discard '<@='
@@ -35,7 +35,7 @@
 }
 
 
-- (void)didMatchDotWord:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchDotWord:(PKAssembly *)a {
     PKToken *lastPart = [a pop];
     [a pop]; // '.'
     PKToken *firstPart = [a pop];
@@ -55,7 +55,7 @@
     NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"erb" ofType:@"grammar"];
     g = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     
-    lp = [[PKParserFactory factory] parserFromGrammar:g assembler:[[[ERBAssembler alloc] init] autorelease]];
+    lp = [[PKParserFactory factory] parserFromGrammar:g assembler:[[[ERBAssembler alloc] init] autorelease] error:nil];
     t = lp.tokenizer;
 //    startPrintMarker = [PKToken tokenWithTokenType:PKTokenTypeSymbol stringValue:@"<@=" floatValue:0];
 }
@@ -64,7 +64,7 @@
 - (void)testFoo {
     t.string = @"oh <@= foo.bar @> !";
     res = [lp completeMatchFor:[PKTokenAssembly assemblyWithTokenizer:t]];
-//    TDEqualObjects([res description], @"[oh, hai, !]oh/<@=/foo/./bar/@>/!^");
+    TDEqualObjects(@"[oh, hai, !]oh/<@=/foo/./bar/@>/!^", [res description]);
     
 }
 

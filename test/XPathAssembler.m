@@ -19,7 +19,8 @@
 @implementation XPathAssembler
 
 - (id)init {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         self.context = [[[XPathContext alloc] init] autorelease];
     }
     return self;
@@ -37,7 +38,7 @@
 }
 
 
-- (void)didMatchAxisSpecifier:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchAxisSpecifier:(PKAssembly *)a {
     //NSLog(@"\n\n %s\n\n %@ \n\n", _cmd, a);
     
     //PKToken *tok = [a pop];
@@ -45,17 +46,17 @@
 }
 
 
-- (void)didMatchNodeTest:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchNodeTest:(PKAssembly *)a {
     //NSLog(@"\n\n %s\n\n %@ \n\n", _cmd, a);
 }
 
 
-- (void)didMatchPredicate:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchPredicate:(PKAssembly *)a {
     //NSLog(@"\n\n %s\n\n %@ \n\n", _cmd, a);
 }
 
 // [4] Step ::=       AxisSpecifier NodeTest Predicate* | AbbreviatedStep    
-- (void)didMatchStep:(PKAssembly *)a {
+- (void)parser:(PKParser *)p didMatchStep:(PKAssembly *)a {
     //NSLog(@"\n\n %s\n\n %@ \n\n", _cmd, a);
 }
 

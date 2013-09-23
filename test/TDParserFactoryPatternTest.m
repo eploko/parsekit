@@ -23,7 +23,7 @@
 
 - (void)test1 {
     g = @"@start = /foo/;";
-    lp = [factory parserFromGrammar:g assembler:nil];
+    lp = [factory parserFromGrammar:g assembler:nil error:nil];
     TDNotNil(lp);
     
     s = @"foo";
@@ -32,7 +32,7 @@
     
     
     g = @"@start = /fo+/;";
-    lp = [factory parserFromGrammar:g assembler:nil];
+    lp = [factory parserFromGrammar:g assembler:nil error:nil];
     TDNotNil(lp);
     
     s = @"foo";
@@ -41,7 +41,7 @@
     
     
     g = @"@start = /fo+/;";
-    lp = [factory parserFromGrammar:g assembler:nil];
+    lp = [factory parserFromGrammar:g assembler:nil error:nil];
     TDNotNil(lp);
     
     s = @"foo";
@@ -50,7 +50,7 @@
     
     
     g = @"@start = /[fo]+/;";
-    lp = [factory parserFromGrammar:g assembler:nil];
+    lp = [factory parserFromGrammar:g assembler:nil error:nil];
     TDNotNil(lp);
     
     s = @"foo";
@@ -59,7 +59,7 @@
     
         
     g = @"@start = /\\w+/;";
-    lp = [factory parserFromGrammar:g assembler:nil];
+    lp = [factory parserFromGrammar:g assembler:nil error:nil];
     TDNotNil(lp);
     
     s = @"foo";
@@ -68,23 +68,23 @@
 }
 
 
-- (void)testOptions {
-    g = @"@start = /foo/i;";
-    lp = [factory parserFromGrammar:g assembler:nil];
-    TDNotNil(lp);
-    
-    s = @"FOO";
-    res = [lp bestMatchFor:[PKTokenAssembly assemblyWithString:s]];
-    TDEqualObjects(@"[FOO]FOO^", [res description]);
-    
-    
-    g = @"@start = /foo/i;";
-    lp = [factory parserFromGrammar:g assembler:nil];
-    TDNotNil(lp);
-    
-    s = @"FoO";
-    res = [lp bestMatchFor:[PKTokenAssembly assemblyWithString:s]];
-    TDEqualObjects(@"[FoO]FoO^", [res description]);
-}
+//- (void)testOptions {
+//    g = @"@start = /foo/i;";
+//    lp = [factory parserFromGrammar:g assembler:nil error:nil];
+//    TDNotNil(lp);
+//    
+//    s = @"FOO";
+//    res = [lp bestMatchFor:[PKTokenAssembly assemblyWithString:s]];
+//    TDEqualObjects(@"[FOO]FOO^", [res description]);
+//    
+//    
+//    g = @"@start = /foo/i;";
+//    lp = [factory parserFromGrammar:g assembler:nil error:nil];
+//    TDNotNil(lp);
+//    
+//    s = @"FoO";
+//    res = [lp bestMatchFor:[PKTokenAssembly assemblyWithString:s]];
+//    TDEqualObjects(@"[FoO]FoO^", [res description]);
+//}
 
 @end

@@ -35,11 +35,12 @@
     
     //NSLog(@"\n\n starting!!! \n\n");
     while ((tok = [t nextToken]) != eof) {
-        NSLog(@"(%@)", tok.stringValue);
+//        NSLog(@"(%@)", tok.stringValue);
     }
     //NSLog(@"\n\n done!!! \n\n");
     
 }
+
 
 - (void)testStuff {
     s = @"2 != 47. Blast-off!! 'Woo-hoo!'";
@@ -51,6 +52,63 @@
     while ((tok = [t nextToken]) != eof) {
         //NSLog(@"(%@) (%.1f) : %@", tok.stringValue, tok.floatValue, [tok debugDescription]);
     }
+}
+
+
+- (void)testStuffWithFastEnumeration {
+    s = @"2 != 47. Blast-off!! 'Woo-hoo!'";
+    t = [PKTokenizer tokenizerWithString:s];
+    
+    NSUInteger idx = 0;
+    NSArray *results = @[
+    @"(2) (2.0) : <Number «2»>",
+    @"(!=) (0.0) : <Symbol «!=»>",
+    @"(47) (47.0) : <Number «47»>",
+    @"(.) (0.0) : <Symbol «.»>",
+    @"(Blast-off) (0.0) : <Word «Blast-off»>",
+    @"(!) (0.0) : <Symbol «!»>",
+    @"(!) (0.0) : <Symbol «!»>",
+    @"('Woo-hoo!') (0.0) : <Quoted String «'Woo-hoo!'»>",
+    ];
+    
+    for (PKToken *tok in t) {
+        NSString *expected = results[idx++];
+        NSString *actual = [NSString stringWithFormat:@"(%@) (%.1f) : %@", tok.stringValue, tok.floatValue, [tok debugDescription]];
+        //NSLog(@"%@", actual);
+        TDEqualObjects(expected, actual);
+    }
+    
+    TDEquals([results count], idx);
+}
+
+
+- (void)testStuffWithFastEnumeration2 {
+    s = @"$00FF_FFFF %0001_0101";
+    t = [PKTokenizer tokenizerWithString:s];
+    
+    [t.numberState addPrefix:@"$" forRadix:16];
+    [t.numberState addGroupingSeparator:'_' forRadix:16];
+    [t setTokenizerState:t.numberState from:'$' to:'$'];
+    
+    [t.numberState addPrefix:@"%" forRadix:2];
+    [t.numberState addGroupingSeparator:'_' forRadix:2];
+    [t setTokenizerState:t.numberState from:'%' to:'%'];
+    
+    
+    NSUInteger idx = 0;
+    NSArray *results = @[
+        @"($00FF_FFFF) (16777215.0) : <Number «16777215»>",
+        @"(%0001_0101) (21.0) : <Number «21»>",
+    ];
+    
+    for (PKToken *tok in t) {
+        NSString *expected = results[idx++];
+        NSString *actual = [NSString stringWithFormat:@"(%@) (%.1f) : %@", tok.stringValue, tok.floatValue, [tok debugDescription]];
+        //NSLog(@"%@", actual);
+        TDEqualObjects(expected, actual);
+    }
+    
+    TDEquals([results count], idx);
 }
 
 
@@ -200,7 +258,7 @@
     t = [PKTokenizer tokenizerWithString:s];
     
     PKToken *tok = [t nextToken];
-    STAssertEqualsWithAccuracy((CGFloat)0.999, tok.floatValue, 0.01, @"");
+    STAssertEqualsWithAccuracy((PKFloat)0.999, tok.floatValue, 0.01, @"");
     TDTrue(tok.isNumber);
     TDEquals(tok.offset, (NSUInteger)3);
 
@@ -229,13 +287,13 @@
     
     PKToken *tok = [t nextToken];
     TDEqualObjects(@"-", tok.stringValue);
-    TDEquals((CGFloat)0.0, tok.floatValue);
+    TDEquals((PKFloat)0.0, tok.floatValue);
     TDTrue(tok.isSymbol);
     TDEquals(tok.offset, (NSUInteger)0);
 
     tok = [t nextToken];
     TDEqualObjects(@"(", tok.stringValue);
-    TDEquals((CGFloat)0.0, tok.floatValue);
+    TDEquals((PKFloat)0.0, tok.floatValue);
     TDTrue(tok.isSymbol);
     TDEquals(tok.offset, (NSUInteger)2);
 }
@@ -247,13 +305,13 @@
     
     PKToken *tok = [t nextToken];
     TDEqualObjects(@"-", tok.stringValue);
-    TDEquals((CGFloat)0.0, tok.floatValue);
+    TDEquals((PKFloat)0.0, tok.floatValue);
     TDTrue(tok.isSymbol);
     TDEquals(tok.offset, (NSUInteger)0);
 	
     tok = [t nextToken];
     TDEqualObjects(@"(", tok.stringValue);
-    TDEquals((CGFloat)0.0, tok.floatValue);
+    TDEquals((PKFloat)0.0, tok.floatValue);
     TDTrue(tok.isSymbol);
     TDEquals(tok.offset, (NSUInteger)1);
 }
@@ -265,13 +323,13 @@
     
     PKToken *tok = [t nextToken];
     TDEqualObjects(@"-", tok.stringValue);
-    TDEquals((CGFloat)0.0, tok.floatValue);
+    TDEquals((PKFloat)0.0, tok.floatValue);
     TDTrue(tok.isSymbol);
     TDEquals(tok.offset, (NSUInteger)0);
 
     tok = [t nextToken];
     TDEqualObjects(@"2", tok.stringValue);
-    TDEquals((CGFloat)2.0, tok.floatValue);
+    TDEquals((PKFloat)2.0, tok.floatValue);
     TDTrue(tok.isNumber);
     TDEquals(tok.offset, (NSUInteger)2);
 }
@@ -287,7 +345,7 @@
     TDEquals(tok.offset, (NSUInteger)0);
 
     tok = [t nextToken];
-    TDEquals((CGFloat)2.0, tok.floatValue);
+    TDEquals((PKFloat)2.0, tok.floatValue);
     TDTrue(tok.isNumber);
     TDEqualObjects(@"2", tok.stringValue);
     TDEquals(tok.offset, (NSUInteger)1);
@@ -302,7 +360,7 @@
     [t setTokenizerState:t.numberState from:'+' to:'+'];
     
     PKToken *tok = [t nextToken];
-    TDEquals((CGFloat)2.0, tok.floatValue);
+    TDEquals((PKFloat)2.0, tok.floatValue);
     TDTrue(tok.isNumber);
     TDEqualObjects(@"+2", tok.stringValue);
     TDEquals(tok.offset, (NSUInteger)0);
@@ -323,7 +381,7 @@
     
     PKToken *eof = [PKToken EOFToken];
     PKToken *token = nil;
-    while (token = [t nextToken]) {
+    while ((token = [t nextToken])) {
         if (eof == token) break;
         
         [toks addObject:token];
@@ -392,37 +450,37 @@
 	PKToken *tok = [t nextToken];
 	TDTrue(tok.isSymbol);
 	TDEqualObjects(tok.stringValue, @"-");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)0);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isSymbol);
 	TDEqualObjects(tok.stringValue, @"(");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)1);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isWord);
 	TDEqualObjects(tok.stringValue, @"ab");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)2);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isSymbol);
 	TDEqualObjects(tok.stringValue, @"+");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)4);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isNumber);
 	TDEqualObjects(tok.stringValue, @"5");
-	TDEquals((CGFloat)5.0, tok.floatValue);
+	TDEquals((PKFloat)5.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)5);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isSymbol);
 	TDEqualObjects(tok.stringValue, @")");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)6);
 }
 
@@ -435,25 +493,25 @@
 	PKToken *tok = [t nextToken];
 	TDTrue(tok.isSymbol);
 	TDEqualObjects(tok.stringValue, @"-");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)0);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isWhitespace);
 	TDEqualObjects(tok.stringValue, @" ");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)1);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isSymbol);
 	TDEqualObjects(tok.stringValue, @"(");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)2);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isWord);
 	TDEqualObjects(tok.stringValue, @"ab");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)3);
 }
 
@@ -465,37 +523,37 @@
 	PKToken *tok = [t nextToken];
 	TDTrue(tok.isSymbol);
 	TDEqualObjects(tok.stringValue, @"+");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)0);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isSymbol);
 	TDEqualObjects(tok.stringValue, @"(");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)1);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isWord);
 	TDEqualObjects(tok.stringValue, @"ab");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)2);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isSymbol);
 	TDEqualObjects(tok.stringValue, @"+");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)4);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isNumber);
 	TDEqualObjects(tok.stringValue, @"5");
-	TDEquals((CGFloat)5.0, tok.floatValue);
+	TDEquals((PKFloat)5.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)5);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isSymbol);
 	TDEqualObjects(tok.stringValue, @")");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)6);
 }
 
@@ -508,25 +566,25 @@
 	PKToken *tok = [t nextToken];
 	TDTrue(tok.isSymbol);
 	TDEqualObjects(tok.stringValue, @"+");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)0);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isWhitespace);
 	TDEqualObjects(tok.stringValue, @" ");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)1);
 
 	tok = [t nextToken];
 	TDTrue(tok.isSymbol);
 	TDEqualObjects(tok.stringValue, @"(");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)2);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isWord);
 	TDEqualObjects(tok.stringValue, @"ab");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)3);
 }
 
@@ -538,37 +596,37 @@
 	PKToken *tok = [t nextToken];
 	TDTrue(tok.isSymbol);
 	TDEqualObjects(tok.stringValue, @".");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)0);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isSymbol);
 	TDEqualObjects(tok.stringValue, @"(");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)1);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isWord);
 	TDEqualObjects(tok.stringValue, @"ab");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)2);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isSymbol);
 	TDEqualObjects(tok.stringValue, @"+");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)4);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isNumber);
 	TDEqualObjects(tok.stringValue, @"5");
-	TDEquals((CGFloat)5.0, tok.floatValue);
+	TDEquals((PKFloat)5.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)5);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isSymbol);
 	TDEqualObjects(tok.stringValue, @")");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)6);
 }
 
@@ -581,25 +639,25 @@
 	PKToken *tok = [t nextToken];
 	TDTrue(tok.isSymbol);
 	TDEqualObjects(tok.stringValue, @".");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)0);
 
 	tok = [t nextToken];
 	TDTrue(tok.isWhitespace);
 	TDEqualObjects(tok.stringValue, @" ");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)1);
 	
 	tok = [t nextToken];
 	TDTrue(tok.isSymbol);
 	TDEqualObjects(tok.stringValue, @"(");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)2);
 
 	tok = [t nextToken];
 	TDTrue(tok.isWord);
 	TDEqualObjects(tok.stringValue, @"ab");
-	TDEquals((CGFloat)0.0, tok.floatValue);
+	TDEquals((PKFloat)0.0, tok.floatValue);
     TDEquals(tok.offset, (NSUInteger)3);
 }
 

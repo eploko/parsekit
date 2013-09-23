@@ -13,6 +13,7 @@
 //  limitations under the License.
 
 #import "TDParserFactoryTest3.h"
+#import "PKAST.h"
 
 @implementation TDParserFactoryTest3
 
@@ -21,21 +22,154 @@
 }
 
 
-- (void)testOrVsAndPrecendence {
-    g = @" @start ( didMatchFoo: ) = foo;\n"
-    @"  foo = Word & /foo/ | Number! { 1 } ( DelimitedString ( '/' , '/' ) Symbol- '%' ) * /bar/ ;";
-    lp = [factory parserFromGrammar:g assembler:nil];
+//- (void)testSpecificSymbol {
+//    g = @"@start = Symbol('-');";
+//    
+//    lp = [factory parserFromGrammar:g assembler:nil error:nil];
+//    
+//    TDNotNil(lp);
+//    
+//    s = @"-";
+//    res = [lp completeMatchFor:[PKTokenAssembly assemblyWithString:s]];
+//    TDEqualObjects(@"[-]-^", [res description]);
+//}
+//
+//
+//- (void)testSpecificSymbol2 {
+//    g = @"@start = Symbol('<=');";
+//    
+//    lp = [factory parserFromGrammar:g assembler:nil error:nil];
+//    
+//    TDNotNil(lp);
+//    
+//    s = @"<=";
+//    res = [lp completeMatchFor:[PKTokenAssembly assemblyWithString:s]];
+//    TDEqualObjects(@"[<=]<=^", [res description]);
+//}
+
+
+- (void)testTrack {
+    g = @"@start = [Number Word];";
+    
+    PKAST *root = [factory ASTFromGrammar:g error:nil];
+    TDEqualObjects(@"(ROOT (@start ([ Number Word)))", [root treeDescription]);
+
+    lp = [factory parserFromGrammar:g assembler:nil error:nil];
+    
     TDNotNil(lp);
     
-    s = @"foo";
+    s = @"3 foo";
     res = [lp completeMatchFor:[PKTokenAssembly assemblyWithString:s]];
-    TDEqualObjects(@"[foo]foo^", [res description]);
+    TDEqualObjects(@"[3, foo]3/foo^", [res description]);
 }
+
+
+- (void)testSubTrack {
+    g = @"@start = Word [Number Word];";
+    
+    PKAST *root = [factory ASTFromGrammar:g error:nil];
+    TDEqualObjects(@"(ROOT (@start (. Word ([ Number Word))))", [root treeDescription]);
+    
+    lp = [factory parserFromGrammar:g assembler:nil error:nil];
+    
+    TDNotNil(lp);
+    
+    s = @"foo 3 bar";
+    res = [lp completeMatchFor:[PKTokenAssembly assemblyWithString:s]];
+    TDEqualObjects(@"[foo, 3, bar]foo/3/bar^", [res description]);
+}
+
+
+- (void)testTrackFailure {
+    g = @"@start = [Number Word];";
+    
+    lp = [factory parserFromGrammar:g assembler:nil error:nil];
+    
+    TDNotNil(lp);
+    
+    BOOL reachedCatch = NO;
+    
+    s = @"3";
+    @try {
+        res = [lp completeMatchFor:[PKTokenAssembly assemblyWithString:s]];
+        TDTrue(0); // should not reach
+    }
+    @catch (NSException *ex) {
+        NSLog(@"%@", ex);
+        reachedCatch = YES;
+        TDEqualObjects([PKTrackException class], [ex class]);
+        TDEqualObjects(@"\n\nAfter : 3\nExpected : Word\nFound : -nothing-\n\n", [ex reason]);
+    }
+    
+    TDTrue(reachedCatch);
+}
+
+
+- (void)testTrackFailure2 {
+    g = @"@start = [Number Symbol];";
+    
+    lp = [factory parserFromGrammar:g assembler:nil error:nil];
+    
+    TDNotNil(lp);
+    
+    BOOL reachedCatch = NO;
+    
+    s = @"3";
+    @try {
+        res = [lp completeMatchFor:[PKTokenAssembly assemblyWithString:s]];
+        TDTrue(0); // should not reach
+    }
+    @catch (NSException *ex) {
+        NSLog(@"%@", ex);
+        reachedCatch = YES;
+        TDEqualObjects([PKTrackException class], [ex class]);
+        TDEqualObjects(@"\n\nAfter : 3\nExpected : Symbol\nFound : -nothing-\n\n", [ex reason]);
+    }
+    
+    TDTrue(reachedCatch);
+}
+
+
+- (void)testSubTrackFailure {
+    g = @"@start = Word [Number Word];";
+    
+    lp = [factory parserFromGrammar:g assembler:nil error:nil];
+    
+    TDNotNil(lp);
+    
+    BOOL reachedCatch = NO;
+    
+    s = @"foo 3";
+    @try {
+        res = [lp completeMatchFor:[PKTokenAssembly assemblyWithString:s]];
+        TDTrue(0); // should not reach
+    }
+    @catch (NSException *ex) {
+        NSLog(@"%@", ex);
+        reachedCatch = YES;
+        TDEqualObjects([PKTrackException class], [ex class]);
+        TDEqualObjects(@"\n\nAfter : foo 3\nExpected : Word\nFound : -nothing-\n\n", [ex reason]);
+    }
+    
+    TDTrue(reachedCatch);
+}
+
+
+//- (void)testOrVsAndPrecendence {
+//    g = @" @start = foo;\n"
+//    @"  foo = Word & /foo/ | Number! ( %{ '/' , '/' } Symbol- '%' ) * /bar/ ;";
+//    lp = [factory parserFromGrammar:g assembler:nil error:nil];
+//    TDNotNil(lp);
+//    
+//    s = @"foo";
+//    res = [lp completeMatchFor:[PKTokenAssembly assemblyWithString:s]];
+//    TDEqualObjects(@"[foo]foo^", [res description]);
+//}
 
 
 - (void)testNegation {
     g = @"@start = ~'foo';";
-    lp = [factory parserFromGrammar:g assembler:nil];
+    lp = [factory parserFromGrammar:g assembler:nil error:nil];
     TDNotNil(lp);
     
     s = @"foo";
@@ -54,7 +188,7 @@
 
 - (void)testNegateSymbol {
     g = @"@start = ~Symbol;";
-    lp = [factory parserFromGrammar:g assembler:nil];
+    lp = [factory parserFromGrammar:g assembler:nil error:nil];
     TDNotNil(lp);
     
     s = @"1";
@@ -78,7 +212,7 @@
 
 - (void)testNegateMore {
     g = @"@start = ~Symbol & ~Number;";
-    lp = [factory parserFromGrammar:g assembler:nil];
+    lp = [factory parserFromGrammar:g assembler:nil error:nil];
     TDNotNil(lp);
     
     s = @"1";
@@ -93,7 +227,7 @@
 
 - (void)testNegateMore2 {
     g = @"@start = ~(Symbol|Number);";
-    lp = [factory parserFromGrammar:g assembler:nil];
+    lp = [factory parserFromGrammar:g assembler:nil error:nil];
     TDNotNil(lp);
     
     s = @"1";
@@ -113,7 +247,7 @@
     @"name = Word;";
     //        @"nameTest = '*' | ncName ':' '*' | qName;"
     
-    lp = [factory parserFromGrammar:g assembler:nil];
+    lp = [factory parserFromGrammar:g assembler:nil error:nil];
     TDNotNil(lp);
     t = lp.tokenizer;
     
@@ -141,7 +275,7 @@
     @"prefix = ncName;"
     @"ncName = Word;";
     
-    lp = [factory parserFromGrammar:g assembler:nil];
+    lp = [factory parserFromGrammar:g assembler:nil error:nil];
     TDNotNil(lp);
     t = lp.tokenizer;
     

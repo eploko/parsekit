@@ -16,10 +16,12 @@
 
 @implementation XPathParserGrammarTest
 
+#if PK_PLATFORM_TWITTER_STATE
+#else
 - (void)setUp {
     NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"xpath1_0" ofType:@"grammar"];
     NSString *g = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-    p = [[PKParserFactory factory] parserFromGrammar:g assembler:nil];
+    p = [[PKParserFactory factory] parserFromGrammar:g assembler:nil error:nil];
     t = p.tokenizer;
 }
 
@@ -72,7 +74,7 @@
     t.string = @"//foo";
     a = [PKTokenAssembly assemblyWithTokenizer:t];
     res = [p bestMatchFor:a];
-    NSLog(@"\n\n res: %@ \n\n", res);
+//    NSLog(@"\n\n res: %@ \n\n", res);
     TDEqualObjects(@"[//, foo]///foo^", [res description]);
 }
 
@@ -288,5 +290,6 @@
     TDNotNil(res);
     TDEqualObjects(@"[foo, and, bar]foo/and/bar^", [res description]);
 }
+#endif
 
 @end
