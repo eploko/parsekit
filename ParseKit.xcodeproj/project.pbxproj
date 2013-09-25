@@ -4895,7 +4895,6 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = ParseKitMobile;
 				SDKROOT = iphoneos;
-				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
