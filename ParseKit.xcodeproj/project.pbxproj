@@ -4909,7 +4909,7 @@
 				1DEB91AF08733DA50010E9CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "ParseKit" */ = {
 			isa = XCConfigurationList;
@@ -4918,7 +4918,7 @@
 				1DEB91B308733DA50010E9CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		D33494150E2963FE00406085 /* Build configuration list for PBXNativeTarget "DemoApp" */ = {
 			isa = XCConfigurationList;
@@ -4927,7 +4927,7 @@
 				D33494140E2963FE00406085 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		D338304E171C923700CCE513 /* Build configuration list for PBXNativeTarget "ParserGenApp" */ = {
 			isa = XCConfigurationList;
@@ -4936,7 +4936,7 @@
 				D338304D171C923700CCE513 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		D34185090E520D410081B0DC /* Build configuration list for PBXNativeTarget "DebugApp" */ = {
 			isa = XCConfigurationList;
@@ -4945,7 +4945,7 @@
 				D34185080E520D410081B0DC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		D37D8DDC1571A4F700CDB822 /* Build configuration list for PBXNativeTarget "ParseKitTests" */ = {
 			isa = XCConfigurationList;
@@ -4954,7 +4954,7 @@
 				D37D8DDB1571A4F700CDB822 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		D3D9754216E7F36700D55EAB /* Build configuration list for PBXNativeTarget "libParseKit" */ = {
 			isa = XCConfigurationList;
@@ -4963,7 +4963,7 @@
 				D3D9754116E7F36700D55EAB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		D3FDC62F0FFC4C2000F1F797 /* Build configuration list for PBXNativeTarget "libParseKitMobile" */ = {
 			isa = XCConfigurationList;
@@ -4972,7 +4972,7 @@
 				D3FDC5850FFC4BFC00F1F797 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
