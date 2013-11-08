@@ -4576,6 +4576,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				VALID_ARCHS = "i386 x86_64 armv7s armv7 arm64";
 			};
 			name = Debug;
@@ -4589,6 +4590,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				VALID_ARCHS = "i386 x86_64 armv7s armv7 arm64";
 			};
 			name = Release;
