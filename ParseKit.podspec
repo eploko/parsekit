@@ -32,4 +32,6 @@ Pod::Spec.new do |s|
   s.osx.framework          =  'Foundation'
   s.library                =  'icucore'
   s.requires_arc           =  false
+  
+  s.dependency 'RegexKitLite', '~> 4.0'
 end

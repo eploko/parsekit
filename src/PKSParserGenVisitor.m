@@ -275,7 +275,7 @@
     BOOL isTerminal = 1 == [node.children count] && [[self concreteNodeForNode:node.children[0]] isTerminal];
     NSString *templateName = isPre ? @"PKSPreCallbackTemplate" : @"PKSPostCallbackTemplate";
     
-    BOOL flag = isPre ? _preassemblerSettingBehavior : _assemblerSettingBehavior;
+    PKParserFactoryAssemblerSettingBehavior flag = isPre ? _preassemblerSettingBehavior : _assemblerSettingBehavior;
 
     switch (flag) {
         case PKParserFactoryAssemblerSettingBehaviorNone:
